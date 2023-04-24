@@ -1,3 +1,5 @@
+// if you have a contract that will be deployed multiple times, use minimal proxy contract to deploy them cheaply
+
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.17;
 
