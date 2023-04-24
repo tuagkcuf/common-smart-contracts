@@ -43,7 +43,7 @@ interface IERC721Receiver {
 }
 
 contract ERC721 is IERC721 {
-    event Transfer(address indexed from, address indexed to uint indexed id);   
+    event Transfer(address indexed from, address indexed to, uint indexed id);   
     event Approval(address indexed owner, address indexed spender, uint indexed id);
     event ApprovalForAll(
         address indexed owner,
