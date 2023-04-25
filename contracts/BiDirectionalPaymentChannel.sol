@@ -116,5 +116,43 @@ contract BiDirectionalPaymentChannel {
         _;
     }
 
-    
+    modifier onlyUser() {
+        require(isUser[msg.sender], "Not user");
+        _;
+    }
+
+    function challengeExit(
+        uint[2] memory _balances,
+        uint _nonce,
+        bytes[2] memory _signatures
+    )
+        public 
+        onlyUser
+        checkSignatures(_signatures, _balances, _nonce)
+        checkBalances(_balances)
+    {
+        require(block.timestamp < expiresAt, "Expired challenge period");
+        require(_nonce > nonce, "Nonce must be greater than the current nonce");
+
+        for (uint i = 0; i < _balances.length; i++) {
+            balances[users[i]] = _balances[i];
+        }
+
+        nonce = _nonce;
+        expiresAt = block.timestamp + challengePeriod;
+
+        emit ChallengeExit(msg.sender, nonce);
+    }
+
+    function withdraw() public onlyUser {
+        require(block.timestamp >= expiresAt, "Challenge period has not expired yet");
+
+        uint amount = balances[msg.sender];
+        balances[msg.sender] = 0;
+
+        (bool sent, ) = msg.sender.call{value: amount}("");
+        require(sent, "Failed to send Ether");
+
+        emit Withdraw(msg.sender, amount);
+    }
 }
