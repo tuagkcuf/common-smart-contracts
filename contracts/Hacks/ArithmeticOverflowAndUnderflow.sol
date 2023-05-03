@@ -4,6 +4,10 @@
 // solidity >= 0.8
 // default behavior for overflow / underflow is to throw an error
 
+// preventative techniques
+// - use SafeMath to will prevent arithmetic overflow and underflow
+// - solidity 0.8 defaults to throwing an error for overflow / underflow
+
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.7.6;
 
@@ -70,3 +74,4 @@ contract Attack {
         timeLock.withdraw();
     }
 }
+
